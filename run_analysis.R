@@ -78,7 +78,10 @@ tidy.data.set <- cbind(molten.set, acc.sig, sensor, measurement, axis)
 tidy.data.set <- tidy.data.set[, -c(3)] # remove old variable column
 tidy.data.set <- tidy.data.set[, c(1, 2, 4, 5, 6, 7, 3)] # reorder the tidy data set
 
+# calculate the average of each variable (acceleration signal, sensor, measurement 
+# and axis) for each activity and each subject
 tidy.data.set = dcast(tidy.data.set, subject + activity ~ 
 						acc.sig + sensor + measurement + axis, mean)
-	
+
+# write to the file system
 write.table(tidy.data.set, "./tidy_data_set.txt", row.name = F)
