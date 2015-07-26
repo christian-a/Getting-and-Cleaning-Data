@@ -61,22 +61,57 @@ The R script has only to be sourced. All steps are executed automatically:
 source('./run_analysis.R')
 ```
 The script creates a new text file **tidy_data_set.txt** in the current working directory, 
-which contains the tidy data set with the average of each variables for each activity and each subject.
-After the execution there is a new variable **tidy.data.set** in your R environment, which also contains the data set.
+which contains the tidy data set with the average of each variables for each activity 
+and each subject. After the execution there is a new variable **tidy.data.set** in your 
+R environment, which also contains the data set.
 
-### At first the subjects are loaded into R ann are merged together
+### Points of interest
+Most of the R script is straight forward: 
+
+Loading data into R, merging and subsetting the data set and renaming columns
+
+Beyond this, there are some point of interest in the script. As described at measurements 
+the features.txt is parsed and only the measurements are extracted from this data set:
 ```R
-train.subject <- read.table("./data/UCI HAR Dataset/train/subject_train.txt")
-test.subject <- read.table("./data/UCI HAR Dataset/test/subject_test.txt")
-# combines the training and the test subject
-merged.subject <- rbind(train.subject, test.subject)
-names(merged.subject) <- c("subject") # rename column for easier merge
+# in features.txt the columns are described
+features <- read.table("./data/UCI HAR Dataset/features.txt")
+
+# extracts only the !!measurements!! on mean(): Mean value and std(): Standard deviation
+# according to the features_info document all other mean() and std() values are calculated
+mean.std <- grep("t.*((Acc)|(Gyro))-(mean|std)\\(\\)", features$V2)
+
+data.set <- merged.set[, mean.std]
 ```
 
-### Merges the training and the test sets to create one data set.
-```R
-train.set <- read.table("./data/UCI HAR Dataset/train/X_train.txt")
-test.set <- read.table("./data/UCI HAR Dataset/test/X_test.txt")
+After the data set is prepared, a molten data set is created. But the molten data set is 
+not a tidy data set, as there are variables stored in the column names. Therefor these 
+variables are extracted from the molten data set and a tidy data set is created, where
+the variables are stored in separate columns. For this purpose the regmatches and regexpr
+functions are used. The result of this part of the script is a tidy data set which 
+contains new columns for the acceleration signal (*acc.sig*), the sensor (*sensor*), the 
+measurement (*measurement*) and the axis (*axis*).
 
-merged.set <- rbind(train.set, test.set) # combines the training and the test set
+```R
+molten.set <- melt(data.set, id.var = c("subject", "activity"))
+
+# extract the acceleration signal
+acc.sig <- regmatches(molten.set$variable, regexpr('Body|Gravity', molten.set$variable)) 
+# extract the sensor
+sensor <- regmatches(molten.set$variable, regexpr('Acc|Gyro', molten.set$variable))
+# extract the measurement
+measurement <- regmatches(molten.set$variable, regexpr('mean\\(\\)|std\\(\\)', molten.set$variable))
+# extract the axis
+axis <- regmatches(molten.set$variable, regexpr('[XYZ]$', molten.set$variable))
+
+# bring all together
+tidy.data.set <- cbind(molten.set, acc.sig, sensor, measurement, axis)
+tidy.data.set <- tidy.data.set[, -c(3)] # remove old variable column
+tidy.data.set <- tidy.data.set[, c(1, 2, 4, 5, 6, 7, 3)] # reorder the tidy data set
+```
+
+In the last step the average of each variable (acceleration signal, sensor, measurement 
+and axis) for each activity and each subject is calculated
+```R
+tidy.data.set = dcast(tidy.data.set, activity + subject ~ 
+						acc.sig + sensor + measurement + axis, mean)
 ```
