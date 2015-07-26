@@ -10,17 +10,17 @@ constant rate of 50Hz.
 
 ## Output data
 
-### activity 
+* activity 
 
-### subject 
+* subject 
 
-### acc.sig 
+* acc.sig 
 
-### sensor
-Acc stands for accelerometer while Gyro stands for gyroscope
+* sensor
+   Acc stands for accelerometer while Gyro stands for gyroscope
 
-### measurement 
+* measurement 
 
-### axis
+* axis
 
-### average
+* average
