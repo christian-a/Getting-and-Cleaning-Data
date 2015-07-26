@@ -64,6 +64,12 @@ names(data.set)[1:18] <- as.character(features[mean.std,][, "V2"])
 ## average of each variable for each activity and each subject.
 molten.set <- melt(data.set, id.var = c("subject", "activity"))
 
+# calculate the average of each variable for each activity and each subject
+tidy.data.set = dcast(molten.set, activity + subject ~ variable, mean)
+
+# create a new molten data set of the average data set
+molten.set <- melt(tidy.data.set, id.var = c("subject", "activity"))
+						
 # extract the acceleration signal
 acc.sig <- regmatches(molten.set$variable, regexpr('Body|Gravity', molten.set$variable)) 
 # extract the sensor
@@ -76,12 +82,7 @@ axis <- regmatches(molten.set$variable, regexpr('[XYZ]$', molten.set$variable))
 # bring all together
 tidy.data.set <- cbind(molten.set, acc.sig, sensor, measurement, axis)
 tidy.data.set <- tidy.data.set[, -c(3)] # remove old variable column
-tidy.data.set <- tidy.data.set[, c(1, 2, 4, 5, 6, 7, 3)] # reorder the tidy data set
-
-# calculate the average of each variable (acceleration signal, sensor, measurement 
-# and axis) for each activity and each subject
-tidy.data.set = dcast(tidy.data.set, activity + subject ~ 
-						acc.sig + sensor + measurement + axis, mean)
+tidy.data.set <- tidy.data.set[, c(2, 1, 4, 5, 6, 7, 3)] # reorder the tidy data set
 
 # write to the file system
 write.table(tidy.data.set, "./tidy_data_set.txt", row.name = F)

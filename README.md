@@ -83,19 +83,24 @@ mean.std <- grep("t.*((Acc)|(Gyro))-(mean|std)\\(\\)", features$V2)
 data.set <- merged.set[, mean.std]
 ```
 
-After the data set is prepared, a molten data set is created. But the molten data set is 
-not a tidy data set, as there are variables stored in the column names. Therefor these 
-variables are extracted from the molten data set and a tidy data set is created, where
-the variables are stored in separate columns. For this purpose the regmatches and regexpr
-functions are used. The result of this part of the script is a tidy data set which 
-contains new columns for the acceleration signal (*acc.sig*), the sensor (*sensor*), the 
-measurement (*measurement*) and the axis (*axis*). The prefix t (denote time) from the 
-feature name was omitted by purpose, as all measurements start with t, so it is a constant
-and does not belong to the tidy data set.
+After the data set is prepared, a molten data set is created. This molten data set is used
+to calculate the average of each variable for each activity and each subject. 
+But the resulting data set is not a tidy data set, as there are variables stored in the 
+column names. Therefor these variables are extracted from the data set and a tidy data 
+set is created, where the variables are stored in separate columns. For this purpose 
+the regmatches and regexpr functions are used. The result of this part of the script is 
+a tidy data set which contains new columns for the acceleration signal (*acc.sig*), the 
+sensor (*sensor*), the measurement (*measurement*) and the axis (*axis*). The prefix t 
+(denote time) from the feature name was omitted by purpose, as all measurements start 
+with t, so it is a constant and does not belong to the tidy data set.
 
 ```R
-molten.set <- melt(data.set, id.var = c("subject", "activity"))
+# calculate the average of each variable for each activity and each subject
+tidy.data.set = dcast(molten.set, activity + subject ~ variable, mean)
 
+# create a new molten data set of the average data set
+molten.set <- melt(tidy.data.set, id.var = c("subject", "activity"))
+						
 # extract the acceleration signal
 acc.sig <- regmatches(molten.set$variable, regexpr('Body|Gravity', molten.set$variable)) 
 # extract the sensor
@@ -108,12 +113,10 @@ axis <- regmatches(molten.set$variable, regexpr('[XYZ]$', molten.set$variable))
 # bring all together
 tidy.data.set <- cbind(molten.set, acc.sig, sensor, measurement, axis)
 tidy.data.set <- tidy.data.set[, -c(3)] # remove old variable column
-tidy.data.set <- tidy.data.set[, c(1, 2, 4, 5, 6, 7, 3)] # reorder the tidy data set
+tidy.data.set <- tidy.data.set[, c(2, 1, 4, 5, 6, 7, 3)] # reorder the tidy data set
 ```
 
-In the last step the average of each variable (acceleration signal, sensor, measurement 
-and axis) for each activity and each subject is calculated
+In the last step the tidy data set is written to a file.
 ```R
-tidy.data.set = dcast(tidy.data.set, activity + subject ~ 
-						acc.sig + sensor + measurement + axis, mean)
+write.table(tidy.data.set, "./tidy_data_set.txt", row.name = F)
 ```
