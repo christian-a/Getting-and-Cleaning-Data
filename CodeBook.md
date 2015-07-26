@@ -12,14 +12,17 @@ The script asumes that the
 data is in the current working directory beneath ./data (i.e. ./data/UCI HAR Dataset).
 
 Only the following features from the original data set are considered, as only these 
-features are the mean and standard deviation of measurements :
-
+features are the mean and standard deviation of measurements:
 
 tBodyAcc-mean()-X, tBodyAcc-mean()-Y, tBodyAcc-mean()-Z, tBodyAcc-std()-X, 
 tBodyAcc-std()-Y, tBodyAcc-std()-Z, tGravityAcc-mean()-X, tGravityAcc-mean()-Y, 
 tGravityAcc-mean()-Z, tGravityAcc-std()-X, tGravityAcc-std()-Y, tGravityAcc-std()-Z, 
 tBodyGyro-mean()-X, tBodyGyro-mean()-Y, tBodyGyro-mean()-Z, tBodyGyro-std()-X, 
 tBodyGyro-std()-Y and tBodyGyro-std()-Z
+
+All other features (described in the features_info.txt of the data set) are calculated 
+features.
+
 
 ## Output data
 The output is a the tidy data set which was created by the five task:
