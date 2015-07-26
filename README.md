@@ -114,6 +114,9 @@ axis <- regmatches(molten.set$variable, regexpr('[XYZ]$', molten.set$variable))
 tidy.data.set <- cbind(molten.set, acc.sig, sensor, measurement, axis)
 tidy.data.set <- tidy.data.set[, -c(3)] # remove old variable column
 tidy.data.set <- tidy.data.set[, c(2, 1, 4, 5, 6, 7, 3)] # reorder the tidy data set
+
+# rename value to average
+tidy.data.set <- rename(tidy.data.set, c("value" = "average"))
 ```
 
 In the last step the tidy data set is written to a file.
