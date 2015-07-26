@@ -87,12 +87,12 @@ After the data set is prepared, a molten data set is created. This molten data s
 to calculate the average of each variable for each activity and each subject. 
 But the resulting data set is not a tidy data set, as there are variables stored in the 
 column names. Therefor these variables are extracted from the data set and a tidy data 
-set is created, where the variables are stored in separate columns. For this purpose 
+set is created, where each variable is stored in separate column. For this purpose 
 the regmatches and regexpr functions are used. The result of this part of the script is 
 a tidy data set which contains new columns for the acceleration signal (*acc.sig*), the 
-sensor (*sensor*), the measurement (*measurement*) and the axis (*axis*). The prefix t 
+sensor (*sensor*), the measurement (*measurement*) and the axis (*axis*). The prefix **t** 
 (denote time) from the feature name was omitted by purpose, as all measurements start 
-with t, so it is a constant and does not belong to the tidy data set.
+with *t*, so it is a constant and does not belong to the tidy data set.
 
 ```R
 # calculate the average of each variable for each activity and each subject
