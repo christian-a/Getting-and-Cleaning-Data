@@ -6,8 +6,8 @@ The purpose of the run_analysis.R script is to create a tidy date
 ## Requirements
 * The [Human Activity Recognition Using Smartphones Data Set](https://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones) data must be in the current working directory beneath ./data (e.g. ./data/UCI HAR Dataset)
 * The libraries reshape2 and plyr must be available in R
-⋅⋅⋅ library(reshape2)
-⋅⋅⋅ library(plyr)
+⋅⋅⋅library(reshape2)
+⋅⋅⋅library(plyr)
 
 ## Execution
 The R script has only to be sourced. All steps are executed automatically:
