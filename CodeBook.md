@@ -17,6 +17,7 @@ constant rate of 50Hz.
 * acc.sig 
 
 * sensor
+
    Acc stands for accelerometer while Gyro stands for gyroscope
 
 * measurement 
