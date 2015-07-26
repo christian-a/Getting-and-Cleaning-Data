@@ -89,7 +89,9 @@ variables are extracted from the molten data set and a tidy data set is created,
 the variables are stored in separate columns. For this purpose the regmatches and regexpr
 functions are used. The result of this part of the script is a tidy data set which 
 contains new columns for the acceleration signal (*acc.sig*), the sensor (*sensor*), the 
-measurement (*measurement*) and the axis (*axis*).
+measurement (*measurement*) and the axis (*axis*). The prefix t (denote time) from the 
+feature name was omitted by purpose, as all measurements start with t, so it is a constant
+and does not belong to the tidy data set.
 
 ```R
 molten.set <- melt(data.set, id.var = c("subject", "activity"))
