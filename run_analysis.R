@@ -69,7 +69,7 @@ acc.sig <- regmatches(molten.set$variable, regexpr('Body|Gravity', molten.set$va
 # extract the sensor
 sensor <- regmatches(molten.set$variable, regexpr('Acc|Gyro', molten.set$variable))
 # extract the measurement
-measurement <- regmatches(molten.set$variable, regexpr('mean|std', molten.set$variable))
+measurement <- regmatches(molten.set$variable, regexpr('mean\\(\\)|std\\(\\)', molten.set$variable))
 # extract the axis
 axis <- regmatches(molten.set$variable, regexpr('[XYZ]$', molten.set$variable))
 
@@ -80,7 +80,7 @@ tidy.data.set <- tidy.data.set[, c(1, 2, 4, 5, 6, 7, 3)] # reorder the tidy data
 
 # calculate the average of each variable (acceleration signal, sensor, measurement 
 # and axis) for each activity and each subject
-tidy.data.set = dcast(tidy.data.set, subject + activity ~ 
+tidy.data.set = dcast(tidy.data.set, activity + subject ~ 
 						acc.sig + sensor + measurement + axis, mean)
 
 # write to the file system
