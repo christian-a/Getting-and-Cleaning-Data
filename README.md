@@ -19,8 +19,8 @@ Therefor the following steps are executed by the script:
 data must be in the current working directory beneath ./data (i.e. ./data/UCI HAR Dataset)
 * The libraries reshape2 and plyr must be available in R  
    ```R
-   library(reshape2)
-   library(plyr)
+library(reshape2)
+library(plyr)
    ```
 
 ## Execution
