@@ -1,4 +1,4 @@
-"activity" "subject" "acc.sig" "sensor" "measurement" "axis" "value"
+"activity" "subject" "acc.sig" "sensor" "measurement" "axis" "average"
 "LAYING" 1 "Body" "Acc" "mean()" "X" 0.22159824394
 "LAYING" 2 "Body" "Acc" "mean()" "X" 0.281373403958333
 "LAYING" 3 "Body" "Acc" "mean()" "X" 0.275516852741935
